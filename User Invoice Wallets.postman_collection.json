@@ -1,0 +1,281 @@
+{
+	"info": {
+		"_postman_id": "652fbc5a-b32e-4719-8172-b4d94cdaa828",
+		"name": "User Invoice Wallets",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "20569470"
+	},
+	"item": [
+		{
+			"name": "Create User",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Should expect an id to return\", function() {",
+							"    let json = pm.response.json();",
+							"    pm.environment.set('userId', json['id']);",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"let WYRE_TOKEN = pm.environment.get('WYRE_TOKEN');"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{WYRE_TOKEN}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"fields\": {\n        \"firstName\": \"Tim\",\n        \"lastName\": \"Cook\",\n        \"cellphoneNumber\": \"+4930986365012\",\n        \"email\": \"tim@gmail.com\",\n        \"dateOfBirth\": \"1980-12-08\",\n        \"residenceAddress\": {\n            \"street1\": \"Werner-Heisenberg-Allee 35\",\n            \"city\": \"Melbourne\",\n            \"state\": \"ME\",\n            \"postalCode\": \"80939\",\n            \"country\": \"CA\"\n        }\n    },\n    \"blockchains\": [\n        \"ALL\"\n    ],\n    \"immediate\": false\n}"
+				},
+				"url": {
+					"raw": "{{api_base_url}}/v3/users",
+					"host": [
+						"{{api_base_url}}"
+					],
+					"path": [
+						"v3",
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create User Wallet",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"WYRE_TOKEN = pm.environment.get('WYRE_TOKEN');",
+							"userId = pm.environment.get('userId');"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Should expect an id to return\", function() {",
+							"    let json = pm.response.json();",
+							"    pm.environment.set('walletId', json['id']);",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{WYRE_TOKEN}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"{{userId}}\",\n    \"callbackUrl\": \"https://requestinspector.com/inspect/{{userId}}-wallet\",\n    \"notes\": \"Notes\"\n}"
+				},
+				"url": {
+					"raw": "{{api_base_url}}/v2/wallets?masqueradeAs=user:{{userId}}",
+					"host": [
+						"{{api_base_url}}"
+					],
+					"path": [
+						"v2",
+						"wallets"
+					],
+					"query": [
+						{
+							"key": "masqueradeAs",
+							"value": "user:{{userId}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Unconfirmed Transfer",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Should expect an id to return\", function() {",
+							"    let json = pm.response.json();",
+							"    pm.environment.set('transferId', json['id']);",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"let WYRE_TOKEN = pm.environment.get('WYRE_TOKEN');",
+							"let walletId = pm.environment.get('walletId');",
+							"let ACCOUNT_ID = pm.environment.get('ACCOUNT_ID');"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{WYRE_TOKEN}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"source\": \"wallet:{{walletId}}\",\r\n    \"sourceCurrency\": \"ETH\",\r\n    \"sourceAmount\": \"0.001\",\r\n    \"dest\": \"account:{{ACCOUNT_ID}}\",\r\n    \"amountIncludesFees\": \"true\",\r\n    \"autoConfirm\": false,\r\n    \"notifyUrl\": \"https://requestinspector.com/inspect/{{userId}}-{{walletId}}-transfer\",\r\n    \"destCurrency\": \"USD\",\r\n    \"message\": \"user invoice to business revenue wallet\"\r\n}"
+				},
+				"url": {
+					"raw": "{{api_base_url}}/v3/transfers?masqueradeAs=user:{{userId}}",
+					"host": [
+						"{{api_base_url}}"
+					],
+					"path": [
+						"v3",
+						"transfers"
+					],
+					"query": [
+						{
+							"key": "masqueradeAs",
+							"value": "user:{{userId}}"
+						}
+					]
+				},
+				"description": "Script that creates a transfer object"
+			},
+			"response": []
+		},
+		{
+			"name": "Confirm Transfer",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Should expect an id to return\", function() {",
+							"    let json = pm.response.json();",
+							"    pm.environment.set('transferId', json['id']);",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"let WYRE_TOKEN = pm.environment.get('WYRE_TOKEN');",
+							"let transferId = pm.environment.get('transferId');"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{WYRE_TOKEN}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{api_base_url}}/v3/transfers/{{transferId}}/confirm",
+					"host": [
+						"{{api_base_url}}"
+					],
+					"path": [
+						"v3",
+						"transfers",
+						"{{transferId}}",
+						"confirm"
+					]
+				},
+				"description": "Script that creates a transfer object"
+			},
+			"response": []
+		}
+	]
+}
