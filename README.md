@@ -24,6 +24,7 @@ Import `Decentralized Authentication.postman_collection.json` as a Collection
 * Generate a secretKey
 * [Submit Auth Token](https://docs.sendwyre.com/reference/submitauthtoken) submit the secret key as an auth token and generate a corresponding API Key
 * Associate the keys to an [Account](https://docs.sendwyre.com/reference/getaccount) or [User](https://docs.sendwyre.com/reference/create-user) to activate
+(for Users, a partnerId is required)
 
 ##### Run collections in Postman
 ![image](https://user-images.githubusercontent.com/104589640/174330245-23d189c2-eeee-41b9-b0ce-26fff71b3159.png)
