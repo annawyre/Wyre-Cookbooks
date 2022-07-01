@@ -297,7 +297,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"fields\": {\r\n        \"firstName\": \"clarence\",\r\n        \"lastName\": \"Neal\",\r\n        \"dateOfBirth\": \"1975-03-06\",\r\n        \"residenceAddress\": {\r\n            \"street1\": \"72 avenue de Provence\",\r\n            \"city\": \"Vandoeuvre-lÈs-nancy\",\r\n            \"state\": \"Lorraine\",\r\n            \"postalCode\": \"54500\",\r\n            \"country\": \"FR\"\r\n        }\r\n    },\r\n    \"blockchains\": [\r\n        \"ALL\"\r\n    ]\r\n}"
+					"raw": "{\r\n    \"partnerId\": \"{{partnerId}}\",\r\n    \"fields\": {\r\n        \"firstName\": \"clarence\",\r\n        \"lastName\": \"Neal\",\r\n        \"dateOfBirth\": \"1975-03-06\",\r\n        \"residenceAddress\": {\r\n            \"street1\": \"72 avenue de Provence\",\r\n            \"city\": \"Vandoeuvre-lÈs-nancy\",\r\n            \"state\": \"Lorraine\",\r\n            \"postalCode\": \"54500\",\r\n            \"country\": \"FR\"\r\n        }\r\n    },\r\n    \"blockchains\": [\r\n        \"ALL\"\r\n    ]\r\n}"
 				},
 				"url": {
 					"raw": "{{api_base_url}}/v3/users",
