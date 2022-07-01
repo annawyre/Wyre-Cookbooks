@@ -3,7 +3,7 @@
 ### Create an Account in Wyre
 Create a [Testwyre Account](https://docs.sendwyre.com/docs/set-up-your-wyre-account) to generate a Sandbox API Key
 
-### User Invoice Wallets 
+## User Invoice Wallets 
 Import `User Invoice Wallets.postman_collection.json` as a Collection
 Import `TestWyre.postman_environment.json` as an Environment
 - Add secret key
@@ -17,7 +17,7 @@ Import `TestWyre.postman_environment.json` as an Environment
 * [Receive wallet callback](https://docs.sendwyre.com/docs/webhooks) and validate amount
 * [Confirm transfer](https://docs.sendwyre.com/reference/confirmtransfer)
 
-### Decentralized Authentication
+## Decentralized Authentication
 Import `Decentralized Authentication.postman_collection.json` as a Collection
 
 #### Use a client-generated secretKey for Bearer authorization 
