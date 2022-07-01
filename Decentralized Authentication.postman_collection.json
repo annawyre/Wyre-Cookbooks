@@ -244,6 +244,7 @@
 					"script": {
 						"exec": [
 							"secretKey = pm.environment.get('secretKey');",
+							"partnerId = pm.environment.get('partnerId');",
 							""
 						],
 						"type": "text/javascript"
