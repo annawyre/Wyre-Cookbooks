@@ -1,0 +1,316 @@
+{
+	"info": {
+		"_postman_id": "2fb5d1c4-0d9f-4a4c-abd3-54b72762bcc3",
+		"name": "Decentralized Authentication",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "20569470"
+	},
+	"item": [
+		{
+			"name": "Generate the Secret Key",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"function makeSecret(length) {",
+							"  var result = \"\";",
+							"  var characters =",
+							"    \"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789\";",
+							"  var charactersLength = characters.length;",
+							"  for (var i = 0; i < length; i++) {",
+							"    result += characters.charAt(Math.floor(Math.random() * charactersLength));",
+							"  }",
+							"  return result, console.log(result),",
+							"  pm.environment.set('secretKey', result);",
+							"}",
+							"",
+							"let secretKey = JSON.stringify({ secretKey: makeSecret(30) });",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// environment variable secretKey set in the Pre-request Script"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "X-Api-Key",
+						"type": "text",
+						"value": "{{WYRE_APIKEY}}",
+						"disabled": true
+					},
+					{
+						"key": "X-Api-Signature",
+						"type": "text",
+						"value": "{{signature}}",
+						"disabled": true
+					},
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "postman-echo.com/get",
+					"host": [
+						"postman-echo",
+						"com"
+					],
+					"path": [
+						"get"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Submit the Secret Key",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"secretKey = pm.environment.get('secretKey');",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Should expect an apiKey to return\", function() {",
+							"    let json = pm.response.json();",
+							"    pm.environment.set('apiKey', json['apiKey']);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "X-Api-Key",
+						"type": "text",
+						"value": "{{WYRE_APIKEY}}",
+						"disabled": true
+					},
+					{
+						"key": "X-Api-Signature",
+						"type": "text",
+						"value": "{{signature}}",
+						"disabled": true
+					},
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{api_base_url}}/v2/sessions/auth/key?secretKey={{secretKey}}",
+					"host": [
+						"{{api_base_url}}"
+					],
+					"path": [
+						"v2",
+						"sessions",
+						"auth",
+						"key"
+					],
+					"query": [
+						{
+							"key": "secretKey",
+							"value": "{{secretKey}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Attach Creds to Account",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"secretKey = pm.environment.get('secretKey');",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Should expect an apiKey to return\", function() {",
+							"    let json = pm.response.json()",
+							"    let accountId = json['id']",
+							"    pm.environment.set('accountId', accountId);",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{secretKey}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "X-Api-Key",
+						"type": "text",
+						"value": "{{WYRE_APIKEY}}",
+						"disabled": true
+					},
+					{
+						"key": "X-Api-Signature",
+						"type": "text",
+						"value": "{{signature}}",
+						"disabled": true
+					},
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"type\": \"INDIVIDUAL\",\r\n    \"country\": \"US\",\r\n    \"subaccount\": true,\r\n    \"profileFields\": [\r\n        {\r\n            \"fieldId\": \"individualLegalName\",\r\n            \"value\": \"Crash Bandicoot\"\r\n        },\r\n        {\r\n            \"fieldId\": \"individualEmail\",\r\n            \"value\": \"{{secretKey}}@test.com\"\r\n        },\r\n        {\r\n            \"fieldId\": \"individualResidenceAddress\",\r\n            \"value\": {\r\n                \"street1\": \"1 Market St\",\r\n                \"city\": \"San Francisco\",\r\n                \"state\": \"CA\",\r\n                \"postalCode\": \"94105\",\r\n                \"country\": \"US\"\r\n            }\r\n        }\r\n    ]\r\n}"
+				},
+				"url": {
+					"raw": "{{api_base_url}}/v3/accounts",
+					"host": [
+						"{{api_base_url}}"
+					],
+					"path": [
+						"v3",
+						"accounts"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Attach Creds to User",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"secretKey = pm.environment.get('secretKey');",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Should expect an apiKey to return\", function() {",
+							"    let json = pm.response.json()",
+							"    let authenticatedAs = json['authenticatedAs'].split(':').pop()",
+							"    pm.environment.set('authenticatedAs', authenticatedAs);",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{secretKey}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "X-Api-Key",
+						"type": "text",
+						"value": "{{WYRE_APIKEY}}",
+						"disabled": true
+					},
+					{
+						"key": "X-Api-Signature",
+						"type": "text",
+						"value": "{{signature}}",
+						"disabled": true
+					},
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"fields\": {\r\n        \"firstName\": \"clarence\",\r\n        \"lastName\": \"Neal\",\r\n        \"dateOfBirth\": \"1975-03-06\",\r\n        \"residenceAddress\": {\r\n            \"street1\": \"72 avenue de Provence\",\r\n            \"city\": \"Vandoeuvre-lÈs-nancy\",\r\n            \"state\": \"Lorraine\",\r\n            \"postalCode\": \"54500\",\r\n            \"country\": \"FR\"\r\n        }\r\n    },\r\n    \"blockchains\": [\r\n        \"ALL\"\r\n    ]\r\n}"
+				},
+				"url": {
+					"raw": "{{api_base_url}}/v3/users",
+					"host": [
+						"{{api_base_url}}"
+					],
+					"path": [
+						"v3",
+						"users"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
