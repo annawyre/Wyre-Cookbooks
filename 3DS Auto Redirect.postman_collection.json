@@ -65,7 +65,6 @@
 					"listen": "prerequest",
 					"script": {
 						"exec": [
-							"WYRE_APIKEY = pm.environment.get('WYRE_APIKEY');",
 							"WYRE_TOKEN = pm.environment.get('WYRE_TOKEN');",
 							"ACCOUNT_ID = pm.environment.get('ACCOUNT_ID');",
 							"reservation = pm.environment.get('reservation');",
@@ -120,7 +119,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n     \"debitCard\": {\n          \"number\": \"4111111111111111\",\n          \"year\": \"2023\",\n          \"month\": \"01\",\n          \"cvv\": \"123\"\n     },\n     \"address\": {\n          \"street1\": \"1234 Test Ave\",\n          \"city\": \"Los Angeles\",\n          \"state\": \"CA\",\n          \"country\": \"US\",\n          \"postalCode\": \"91423\"\n     },\n     \"trigger3ds\": true,\n     \"amount\": \"10\",\n     \"sourceCurrency\": \"USD\",\n     \"destCurrency\": \"USDC\",\n     \"dest\": \"account:{{ACCOUNT_ID}}\",\n     \"referrerAccountId\": \"{{ACCOUNT_ID}}\",\n     \"givenName\": \"Crash\",\n     \"familyName\": \"Bandicoot\",\n     \"email\": \"test@sendwyre.com\",\n     \"phone\": 18588255555,\n     \"referenceId\": \"{{ACCOUNT_ID}}\",\n     \"ipAddress\": \"1.1.1.1\",\n     \"reservationId\": \"{{reservation}}\"\n}"
+					"raw": "{\n     \"debitCard\": {\n          \"number\": \"4111111111111111\",\n          \"year\": \"2023\",\n          \"month\": \"01\",\n          \"cvv\": \"123\"\n     },\n     \"address\": {\n          \"street1\": \"123 Main St\",\n          \"city\": \"Los Angeles\",\n          \"state\": \"CA\",\n          \"country\": \"US\",\n          \"postalCode\": \"91423\"\n     },\n     \"trigger3ds\": true,\n     \"amount\": \"10\",\n     \"sourceCurrency\": \"USD\",\n     \"destCurrency\": \"USDC\",\n     \"dest\": \"account:{{ACCOUNT_ID}}\",\n     \"referrerAccountId\": \"{{ACCOUNT_ID}}\",\n     \"givenName\": \"Crash\",\n     \"familyName\": \"Bandicoot\",\n     \"email\": \"test@sendwyre.com\",\n     \"phone\": 18588255555,\n     \"referenceId\": \"{{ACCOUNT_ID}}\",\n     \"ipAddress\": \"1.1.1.1\",\n     \"reservationId\": \"{{reservation}}\"\n}"
 				},
 				"url": {
 					"raw": "{{api_base_url}}/v3/debitcard/process/partner",
@@ -144,7 +143,6 @@
 					"listen": "prerequest",
 					"script": {
 						"exec": [
-							"WYRE_APIKEY = pm.environment.get('WYRE_APIKEY');",
 							"WYRE_TOKEN = pm.environment.get('WYRE_TOKEN');",
 							"walletOrderId = pm.environment.get('walletOrderId');",
 							""
@@ -177,7 +175,6 @@
 					"listen": "prerequest",
 					"script": {
 						"exec": [
-							"WYRE_APIKEY = pm.environment.get('WYRE_APIKEY');",
 							"WYRE_TOKEN = pm.environment.get('WYRE_TOKEN');",
 							"walletOrderId = pm.environment.get('walletOrderId');",
 							""
