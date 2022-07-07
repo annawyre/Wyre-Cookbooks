@@ -5,6 +5,14 @@ Create a [Testwyre Account](https://docs.sendwyre.com/docs/set-up-your-wyre-acco
 
 [How to run Postman Collections](https://github.com/annawyre/Wyre-Cookbooks#run-collections-in-postman)
 
+|Variable|Value|
+|--------|-----|
+|api_base_url - Test|https://api.testwyre.com|
+|api_base_url - Prod|https://api.sendwyre.com|
+|WYRE_TOKEN|Your Wyre Private Key|
+|ACCOUNT_ID|Your Wyre Partner Account ID|
+
+
 ## Cookbooks
 - [User Invoice Wallets](https://github.com/annawyre/Wyre-Cookbooks#user-invoice-wallets)
 - [Decentralized Authentication](https://github.com/annawyre/Wyre-Cookbooks#decentralized-authentication)
