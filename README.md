@@ -3,6 +3,13 @@
 ### Create an Account in Wyre
 Create a [Testwyre Account](https://docs.sendwyre.com/docs/set-up-your-wyre-account) to generate a Sandbox API Key
 
+[How to run Postman Collections](https://github.com/annawyre/Wyre-Cookbooks#run-collections-in-postman)
+
+## Cookbooks
+- [User Invoice Wallets](https://github.com/annawyre/Wyre-Cookbooks#user-invoice-wallets)
+- [Decentralized Authentication](https://github.com/annawyre/Wyre-Cookbooks#decentralized-authentication)
+- [3DS with Autodirect]()
+
 ## User Invoice Wallets 
 Import `User Invoice Wallets.postman_collection.json` as a Collection
 Import `TestWyre.postman_environment.json` as an Environment
