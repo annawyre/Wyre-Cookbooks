@@ -1,0 +1,244 @@
+{
+	"info": {
+		"_postman_id": "82ead14a-383f-4204-afe9-a655a75740aa",
+		"name": "3DS Auto Redirect",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "20569470"
+	},
+	"item": [
+		{
+			"name": "Create Reservation",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Should expect an id to return\", function() {",
+							"    let json = pm.response.json();",
+							"    pm.environment.set('reservation', json['reservation']);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{WYRE_TOKEN}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n     \"amount\": \"10\",\n     \"sourceCurrency\": \"USD\",\n     \"destCurrency\": \"USDC\",\n     \"redirectUrl\": \"https://www.sendwyre.com\",\n     \"referrerAccountId\": \"{{ACCOUNT_ID}}\",\n     \"paymentMethod\": \"debit-card\",\n     \"autoRedirect\": true\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{api_base_url}}/v3/orders/reserve",
+					"host": [
+						"{{api_base_url}}"
+					],
+					"path": [
+						"v3",
+						"orders",
+						"reserve"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Order",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"WYRE_APIKEY = pm.environment.get('WYRE_APIKEY');",
+							"WYRE_TOKEN = pm.environment.get('WYRE_TOKEN');",
+							"ACCOUNT_ID = pm.environment.get('ACCOUNT_ID');",
+							"reservation = pm.environment.get('reservation');",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Should expect an id to return\", function() {",
+							"    let json = pm.response.json();",
+							"    pm.environment.set('walletOrderId', json['id']);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{WYRE_TOKEN}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "X-Api-Key",
+						"value": "{{WYRE_APIKEY}}",
+						"type": "text",
+						"disabled": true
+					},
+					{
+						"key": "X-Api-Signature",
+						"value": "{{signature}}",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n     \"debitCard\": {\n          \"number\": \"4111111111111111\",\n          \"year\": \"2023\",\n          \"month\": \"01\",\n          \"cvv\": \"123\"\n     },\n     \"address\": {\n          \"street1\": \"1234 Test Ave\",\n          \"city\": \"Los Angeles\",\n          \"state\": \"CA\",\n          \"country\": \"US\",\n          \"postalCode\": \"91423\"\n     },\n     \"trigger3ds\": true,\n     \"amount\": \"10\",\n     \"sourceCurrency\": \"USD\",\n     \"destCurrency\": \"USDC\",\n     \"dest\": \"account:{{ACCOUNT_ID}}\",\n     \"referrerAccountId\": \"{{ACCOUNT_ID}}\",\n     \"givenName\": \"Crash\",\n     \"familyName\": \"Bandicoot\",\n     \"email\": \"test@sendwyre.com\",\n     \"phone\": 18588255555,\n     \"referenceId\": \"{{ACCOUNT_ID}}\",\n     \"ipAddress\": \"1.1.1.1\",\n     \"reservationId\": \"{{reservation}}\"\n}"
+				},
+				"url": {
+					"raw": "{{api_base_url}}/v3/debitcard/process/partner",
+					"host": [
+						"{{api_base_url}}"
+					],
+					"path": [
+						"v3",
+						"debitcard",
+						"process",
+						"partner"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Order",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"WYRE_APIKEY = pm.environment.get('WYRE_APIKEY');",
+							"WYRE_TOKEN = pm.environment.get('WYRE_TOKEN');",
+							"walletOrderId = pm.environment.get('walletOrderId');",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{api_base_url}}/v3/orders/{{walletOrderId}}",
+					"host": [
+						"{{api_base_url}}"
+					],
+					"path": [
+						"v3",
+						"orders",
+						"{{walletOrderId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Authorization",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"WYRE_APIKEY = pm.environment.get('WYRE_APIKEY');",
+							"WYRE_TOKEN = pm.environment.get('WYRE_TOKEN');",
+							"walletOrderId = pm.environment.get('walletOrderId');",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{WYRE_TOKEN}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "X-Api-Key",
+						"value": "{{WYRE_APIKEY}}",
+						"type": "text",
+						"disabled": true
+					},
+					{
+						"key": "X-Api-Signature",
+						"value": "{{signature}}",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{api_base_url}}/v3/debitcard/authorization/{{walletOrderId}}/with-redirection",
+					"host": [
+						"{{api_base_url}}"
+					],
+					"path": [
+						"v3",
+						"debitcard",
+						"authorization",
+						"{{walletOrderId}}",
+						"with-redirection"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
