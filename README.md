@@ -33,5 +33,11 @@ Import `Decentralized Authentication.postman_collection.json` as a Collection
 * Associate the keys to an [Account](https://docs.sendwyre.com/reference/getaccount) or [User](https://docs.sendwyre.com/reference/create-user) to activate
 (for Users, a partnerId is required)
 
+## 3DS with Autoredirect
+Import `3DS Auto Redirect.postman_collection.json` as a Collection
+Import `TestWyre.postman_environment.json` as an Environment
+- Add secret key
+- Add master account id
+
 ##### Run collections in Postman
 ![image](https://user-images.githubusercontent.com/104589640/174330245-23d189c2-eeee-41b9-b0ce-26fff71b3159.png)
