@@ -53,6 +53,7 @@ Import `TestWyre.postman_environment.json` as an Environment
 - `/v3/orders/reserve` Specify custom success page in “redirectUrl” parameter and include “autoRedirect” : true
 - `/v3/debitcard/process/partner` Include "trigger3ds": true
 - `/v3/debitcard/authorization/{{walletOrderId}}/with-redirection` will return "authorization3dsUrl" for the 3ds challenge
+  - Option to display url in an iframe: `<iframe src="{{authorization3dsUrl}}"></iframe>`
 
 ##### Run collections in Postman
 ![image](https://user-images.githubusercontent.com/104589640/174330245-23d189c2-eeee-41b9-b0ce-26fff71b3159.png)
