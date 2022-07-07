@@ -8,10 +8,11 @@ Create a [Testwyre Account](https://docs.sendwyre.com/docs/set-up-your-wyre-acco
 ## Cookbooks
 - [User Invoice Wallets](https://github.com/annawyre/Wyre-Cookbooks#user-invoice-wallets)
 - [Decentralized Authentication](https://github.com/annawyre/Wyre-Cookbooks#decentralized-authentication)
-- [3DS with Autodirect]()
+- [3DS with Autodirect](https://github.com/annawyre/Wyre-Cookbooks#3ds-with-autoredirect)
 
 ## User Invoice Wallets 
 Import `User Invoice Wallets.postman_collection.json` as a Collection
+
 Import `TestWyre.postman_environment.json` as an Environment
 - Add secret key
 - Add master account id
@@ -35,6 +36,7 @@ Import `Decentralized Authentication.postman_collection.json` as a Collection
 
 ## 3DS with Autoredirect
 Import `3DS Auto Redirect.postman_collection.json` as a Collection
+
 Import `TestWyre.postman_environment.json` as an Environment
 - Add secret key
 - Add master account id
