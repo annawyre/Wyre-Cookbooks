@@ -17,6 +17,7 @@ Create a [Testwyre Account](https://docs.sendwyre.com/docs/set-up-your-wyre-acco
 - [User Invoice Wallets](https://github.com/annawyre/Wyre-Cookbooks#user-invoice-wallets)
 - [Decentralized Authentication](https://github.com/annawyre/Wyre-Cookbooks#decentralized-authentication)
 - [3DS with Autodirect](https://github.com/annawyre/Wyre-Cookbooks#3ds-with-autoredirect)
+- [MoneyGram](https://github.com/annawyre/Wyre-Cookbooks/blob/main/Moneygram.postman_collection.json)
 
 ## User Invoice Wallets 
 Import `User Invoice Wallets.postman_collection.json` as a Collection
@@ -54,6 +55,18 @@ Import `TestWyre.postman_environment.json` as an Environment
 - `/v3/debitcard/process/partner` Include "trigger3ds": true
 - `/v3/debitcard/authorization/{{walletOrderId}}/with-redirection` will return "authorization3dsUrl" for the 3ds challenge
   - Option to display url in an iframe: `<iframe src="{{authorization3dsUrl}}"></iframe>`
+
+## MoneyGram
+Import `Moneygram.postman_collection.json` as a Collection
+- Add secret key
+- Add master account id
+
+### Payout to thousands of Moneygram locations around the world
+* [Create User](https://docs.sendwyre.com/reference/create-user) (kyc check)
+* [Create Wallet](https://docs.sendwyre.com/reference/createwallet) (masqueradeAs)
+* [Create Transfer](https://docs.sendwyre.com/reference/createtransfer) (masqueradeAs)
+* Navigate user to `completeDepositUrl`
+* Provide `more_info_url` to user
 
 ##### Run collections in Postman
 ![image](https://user-images.githubusercontent.com/104589640/174330245-23d189c2-eeee-41b9-b0ce-26fff71b3159.png)
