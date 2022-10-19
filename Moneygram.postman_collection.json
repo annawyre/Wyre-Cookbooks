@@ -1,0 +1,474 @@
+{
+	"info": {
+		"_postman_id": "e552bb63-7da3-4cd9-b374-cd4c5a83eb0a",
+		"name": "Moneygram Copy",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "20569470"
+	},
+	"item": [
+		{
+			"name": "Create User",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Should expect an id to return\", function() {",
+							"    let json = pm.response.json();",
+							"    pm.environment.set('userId', json['id']);",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"fields\": {\n        \"firstName\": \"Moneygram\",\n        \"lastName\": \"User\",\n        \"cellphoneNumber\": \"+16508155122\",\n        \"email\": \"test@sendwyre.com\",\n        \"dateOfBirth\": \"1990-01-01\",\n        \"residenceAddress\": {\n            \"street1\": \"123 Main st.\",\n            \"city\": \"Orlando\",\n            \"state\": \"FL\",\n            \"postalCode\": \"12345\",\n            \"country\": \"US\"\n        }\n    },\n    \"blockchains\": [\n        \"ALL\"\n    ],\n    \"immediate\": true\n}"
+				},
+				"url": {
+					"raw": "{{api_base_url}}/v3/users",
+					"host": [
+						"{{api_base_url}}"
+					],
+					"path": [
+						"v3",
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get User by MGI Scope",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "X-Api-Key",
+						"value": "{{WYRE_APIKEY}}",
+						"type": "text",
+						"disabled": true
+					},
+					{
+						"key": "X-Api-Signature",
+						"value": "{{signature}}",
+						"type": "text",
+						"disabled": true
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{api_base_url}}/v3/users/{{userId}}?scopes=MONEY_GRAM_SEP24",
+					"host": [
+						"{{api_base_url}}"
+					],
+					"path": [
+						"v3",
+						"users",
+						"{{userId}}"
+					],
+					"query": [
+						{
+							"key": "scopes",
+							"value": "MONEY_GRAM_SEP24"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Wallet",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"OK\", function() {",
+							"    pm.response.to.have.status(200);",
+							"    let response = pm.response.json();",
+							"    walletId = response.id;",
+							"    pm.environment.set(\"walletId\", walletId);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "X-Api-Signature",
+						"value": "{{signature}}",
+						"type": "text",
+						"disabled": true
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "X-API-Key",
+						"value": "{{WYRE_APIKEY}}",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"user:{{userId}}\",\n    \"type\": \"DEFAULT\"\n}"
+				},
+				"url": {
+					"raw": "{{api_base_url}}/v2/wallets?masqueradeAs=user:{{userId}}",
+					"host": [
+						"{{api_base_url}}"
+					],
+					"path": [
+						"v2",
+						"wallets"
+					],
+					"query": [
+						{
+							"key": "masqueradeAs",
+							"value": "user:{{userId}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Fund Wallet",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"OK\", function() {",
+							"    pm.response.to.have.status(200);",
+							"    console.log(\"wallet funded\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "X-Api-Version",
+						"value": "2",
+						"type": "text"
+					},
+					{
+						"key": "X-Api-Key",
+						"value": "{{WYRE_APIKEY}}",
+						"type": "text",
+						"disabled": true
+					},
+					{
+						"key": "X-Api-Signature",
+						"value": "{{signature}}",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"dest\": \"wallet:{{walletId}}\",\r\n    \"source\": \"account:{{ACCOUNT_ID}}\",\r\n    \"autoConfirm\": true,\r\n    \"sourceCurrency\": \"ETH\",\r\n    \"destCurrency\": \"USD\",\r\n    \"destAmount\": \"10\"\r\n}\r\n"
+				},
+				"url": {
+					"raw": "{{api_base_url}}/v3/transfers",
+					"host": [
+						"{{api_base_url}}"
+					],
+					"path": [
+						"v3",
+						"transfers"
+					]
+				},
+				"description": "Script that creates a transfer object"
+			},
+			"response": []
+		},
+		{
+			"name": "Create Transfer to Moneygram",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"OK\", function() {",
+							"    pm.response.to.have.status(200);",
+							"    let response = pm.response.json();",
+							"    transferId = response.id;",
+							"    pm.environment.set(\"transferId\", transferId);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"dest\": \"paymentMethod:MGISep24PaymentMethod\",\r\n    \"source\": \"wallet:{{walletId}}\",\r\n    \"autoConfirm\": true,\r\n    \"sourceCurrency\": \"USD\",\r\n    \"destCurrency\": \"SUSDC\",\r\n    \"destAmount\": \"5\"\r\n}"
+				},
+				"url": {
+					"raw": "{{api_base_url}}/v2/transfers?masqueradeAs=user:{{userId}}",
+					"host": [
+						"{{api_base_url}}"
+					],
+					"path": [
+						"v2",
+						"transfers"
+					],
+					"query": [
+						{
+							"key": "masqueradeAs",
+							"value": "user:{{userId}}"
+						}
+					]
+				},
+				"description": "Script that creates a transfer object"
+			},
+			"response": []
+		},
+		{
+			"name": "Poll Transfer for completeDepositUrl",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{api_base_url}}/v3/transfers/{{transferId}}?masqueradeAs=user:{{userId}}",
+					"host": [
+						"{{api_base_url}}"
+					],
+					"path": [
+						"v3",
+						"transfers",
+						"{{transferId}}"
+					],
+					"query": [
+						{
+							"key": "masqueradeAs",
+							"value": "user:{{userId}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Stellar Transaction Status",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{api_base_url}}/v3/sep-24/transaction/{{transferId}}",
+					"host": [
+						"{{api_base_url}}"
+					],
+					"path": [
+						"v3",
+						"sep-24",
+						"transaction",
+						"{{transferId}}"
+					],
+					"query": [
+						{
+							"key": "",
+							"value": "",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{WYRE_TOKEN}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}
